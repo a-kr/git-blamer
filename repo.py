@@ -1,9 +1,10 @@
 # coding: utf-8
 import os
+import cPickle as pickle
 
 import cmds
 import plot
-import cPickle as pickle
+import graph
 
 class Repo(object):
     """ git-репозиторий """
@@ -122,8 +123,50 @@ class Repo(object):
             # интеграция данных
             commit.compute_snapshot_blame()
             print "completed", i, "of", len(self.commit_order)
+            
+    def get_longest_path(self):
+        """ Ищет путь наибольшей длины из HEAD в первый коммит
+            (длина = число коммитов).
+            Возвращает список SHA1.
+        """
+        # выполним поиск в глубину без отмечания посещенных вершин.
+        longest_path = []
+        stack = []
+        stack.append([self.head, 0]) # текущий коммит и номер родителя,
+                                     # к которому перейдем
+        # max_prefix_len[sha1] = k <=> самый длинный путь в sha1 имеет длину k
+        max_prefix_len = {} 
+        while len(stack) > 0:
+            sha1, parent_i = stack[-1]
+            
+            if sha1 not in max_prefix_len:
+                # первый раз заходим в этот коммит
+                max_prefix_len[sha1] = len(stack)-1
+            elif len(stack)-1 < max_prefix_len[sha1]:
+                # очевидно, что мы не можем улучшить путь
+                # ("<=" поставить нельзя из-за возврата от предков)
+                stack.pop()
+                continue
+            else:
+                # путь в этот коммит удлиннился
+                max_prefix_len[sha1] = len(stack)-1
+            
+            commit = self.commits[sha1]
+            if parent_i >= len(commit.parents):
+                # перебрали всех предков коммита
+                if parent_i == 0: # достигли корневого коммита
+                    if len(stack) > len(longest_path):
+                        longest_path = list(stack)
+                stack.pop()
+            else:
+                parent_sha = commit.parents[parent_i]
+                stack[-1][1] += 1
+                stack.append([parent_sha, 0])
+        return [sha1 for sha1, _ in longest_path]
+        
 
-r = Repo.open(r"c:\Dropbox\MSTU\8_Semester\dialog\question_thing")
+repo_path = r"c:\Dropbox\MSTU\8_Semester\dialog\question_thing"
+r = Repo.open(repo_path)
 print "Repo loaded."
 print "Blaming the authors..."
 r.compute_blame()
@@ -135,4 +178,20 @@ print "Stats for the latest revision:"
 print r.commits[r.head].snapshot_blame
 print "Plotting..."
 
-plot.plot_snapshot_blame(r, relative=True)
+longest_path = r.get_longest_path()
+print "Found longest_path, len = ", len(longest_path)
+png, commit_coords = graph.commit_network(r, set(longest_path))
+f = open('graph.png','wb')
+f.write(png)
+f.close()
+print "Plotting blame..."
+png = plot.plot_snapshot_blame(r, longest_path, commit_coords, relative=False)
+f = open('blame-abs.png','wb')
+f.write(png)
+f.close()
+print "Plotting blame (rel)..."
+png = plot.plot_snapshot_blame(r, longest_path, commit_coords, relative=True)
+f = open('blame-rel.png','wb')
+f.write(png)
+f.close()
+print "Done"
