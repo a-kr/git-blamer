@@ -62,6 +62,8 @@ def prepare_dot(repo, commits_to_highlight):
     
     return dot.getvalue()
     
+# границы рисунка в DOT
+re_boundary = re.compile(r'graph \[bb="0,0,(\d+),(\d+)"\];')
 # поиск описания узлов-коммитов в DOT
 re_nodes = re.compile(r'\s+N([a-f\d]+)\s+\[.*pos="(\d+),(\d+)".*')
     
@@ -73,13 +75,22 @@ def extract_commit_coords(dot):
     """ Извлечение координат узлов-коммитов из DOT-файла, получаемого в результате
         препроцессинга
     """
+    match = re_boundary.search(dot)
+    if not match:
+        import pdb; pdb.set_trace()
+    width, height = match.groups()
+    width, height = float(width) * DOT_SCALE, float(height) * DOT_SCALE
+    
     commit_coords = {}
     for line in dot.split('\n'):
         match = re_nodes.match(line)
         if match:
             sha1, x, y = match.groups()
-            x,y = int(x), int(y)
-            commit_coords[sha1] = (int(x*DOT_SCALE), int(y*DOT_SCALE))
+            x,y = int(x) * DOT_SCALE, int(y) * DOT_SCALE
+            y = height - y # инвертируем ось Y
+            x = x + 5 # смещения подобраны экспериментально, чтобы
+            y = y + 5 # координаты соответствовали центрам нарисованных вершин
+            commit_coords[sha1] = (int(x), int(y))
     return commit_coords
             
     

@@ -89,6 +89,7 @@ class Repo(object):
         """ Возвращает true, если файл с указанным именем не должен учитываться
             при подсчете метрик (например, является бинарным)
         """
+        # TODO: считывать конфиг из репозитория
         if 'aot_seman' in file_path:
             return True
         bad_extensions = (".pdf", ) # Git считает pdf текстовыми
@@ -134,7 +135,7 @@ class Repo(object):
         stack = []
         stack.append([self.head, 0]) # текущий коммит и номер родителя,
                                      # к которому перейдем
-        # max_prefix_len[sha1] = k <=> самый длинный путь в sha1 имеет длину k
+        # max_prefix_len[sha1] = k <=> самый длинный путь в коммит sha1 имеет длину k
         max_prefix_len = {} 
         while len(stack) > 0:
             sha1, parent_i = stack[-1]
@@ -181,17 +182,42 @@ print "Plotting..."
 longest_path = r.get_longest_path()
 print "Found longest_path, len = ", len(longest_path)
 png, commit_coords = graph.commit_network(r, set(longest_path))
-f = open('graph.png','wb')
+f = open('graph.png', 'wb')
 f.write(png)
 f.close()
 print "Plotting blame..."
 png = plot.plot_snapshot_blame(r, longest_path, commit_coords, relative=False)
-f = open('blame-abs.png','wb')
+f = open('blame-abs.png', 'wb')
 f.write(png)
 f.close()
 print "Plotting blame (rel)..."
 png = plot.plot_snapshot_blame(r, longest_path, commit_coords, relative=True)
-f = open('blame-rel.png','wb')
+f = open('blame-rel.png', 'wb')
 f.write(png)
 f.close()
 print "Done"
+
+import json
+
+print "Writing commit information..."
+f = open('commits-data.js', 'w')
+for sha1 in r.commits:
+    x, y = commit_coords[sha1]
+    commit = r.commits[sha1]
+    print >>f, 'Commits.add(%d, %d, {' % (x, y)
+    print >>f, '\tx: %d, y: %d,' % (x, y)
+    print >>f, '\tsha1: "%s",' % sha1
+    print >>f, '\tauthor: "%s",' % commit.author
+    print >>f, '\tdate: "%s",' % str(commit.date)
+    print >>f, '\tmessage: "%s",' % commit.message
+    print >>f, '\tblame: %s,' % json.dumps(commit.snapshot_blame.data)
+    if len(commit.parents) > 1:
+        changes = []
+    else:
+        changes = [ [la, ld, path] for path, la, ld in commit.changes ]
+    print >>f, '\tchanges: %s,' % json.dumps(changes)
+    print >>f, '});'
+
+f.close()
+print "Done"
+    

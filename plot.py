@@ -58,7 +58,7 @@ def pil_stacked_area_chart(x_values, y_series, legend, stacked=True):
             draw.polygon(points, outline=COLORS[si % COLORNUM])
         
     # дорисовываем легенду
-    font = ImageFont.load_default()
+    font = ImageFont.truetype('tahoma.ttf', 10) #load_default()
     txt_w, txt_h = draw.textsize('Wfj', font=font)
     
     draw.text((WIDTH + 2, MARGIN + 2), str(int(max_y)), fill="black", font=font)

@@ -1,4 +1,113 @@
-<title>Pictures</title>
-<img src="graph.png"><br/>
+﻿<title>Pictures</title>
+<img id="graph" src="graph.png"><br/>
 <img src="blame-abs.png"><br/>
 <img src="blame-rel.png"><br/>
+
+<script src="jquery.js"></script>
+<script src="commits-map.js"></script>
+<script src="commits-data.js"></script>
+
+<style>
+#commit_info {
+    position: absolute;
+    background-color: white;
+    border: solid 1px black;
+    font-family: tahoma, arial, sans-serif;
+    font-size: 10pt;
+    width: auto;
+}
+
+#commit_aim {
+    position: relative;
+    left: -10px;
+    top: -10px;
+}
+
+.commit_sha1 { font-family: courier new, courier, monospace; font-size: 10px; }
+.commit_author { font-weight: bold; }
+.commit_date { color: blue }
+.commit_message { color: #666666 }
+.commit_blame { font-size: 80% }
+.commit_changes { font-size: 80%; width: auto; max-height: 100px; overflow-y: auto; }
+.commit_changes table { font-size: 100% }
+
+.change_tab_add {  color: blue }
+.change_tab_del {  color: red }
+.change_filename { color: gray }
+</style>
+
+<div id="commit_info">
+<img id="commit_aim" src="dot.png"/>
+<div class="commit_sha1"></div>
+<div class="commit_author"></div>
+<div class="commit_date"></div>
+<div class="commit_message"></div>
+<hr/>
+<div class="commit_blame"></div>
+<hr/>
+<div class="commit_changes"></div>
+</div>
+
+<script>
+$('#commit_info').mousemove( function (evt) { return false; } );
+$('#graph').mousemove( function (evt) {
+    var x = evt.pageX - evt.target.offsetLeft;
+    var y = evt.pageY - evt.target.offsetTop;
+    var commit_info = Commits.find(x,y);
+    if (!commit_info) {
+        $('#commit_info').hide();
+        return;
+    }
+    
+    var pos = {
+        left: commit_info.x + evt.target.offsetLeft + 5, 
+        top: commit_info.y + evt.target.offsetTop + 5
+    };
+    var cur_pos = $('#commit_info').offset();
+    
+    if ($('#commit_info').is(':visible') 
+        && cur_pos.left == pos.left && cur_pos.top == pos.top) {
+        return;
+    }
+    
+    $('#commit_info').show().offset(pos);
+    
+    var displayed_attrs = ['sha1', 'author', 'date', 'message'];
+    for (var i in displayed_attrs) {
+        var attr = displayed_attrs[i];
+        $('.commit_' + attr).text(commit_info[attr]);
+    }
+    
+    var blame_txt = "";
+    var authors = [];
+    var sum = 0;
+    for (var author in commit_info.blame) {
+        authors.push(author);
+        sum += commit_info.blame[author];
+    }
+    authors.sort( function (a1, a2) {
+        return commit_info.blame[a2] - commit_info.blame[a1];
+    });
+    blame_txt += "Total lines: " + sum + "<br/>";
+    
+    for (var i in authors) {
+        var author = authors[i];
+        var percents = Math.round(commit_info.blame[author] * 100.0 * 10.0 / sum) / 10.0;
+        if (percents > 0.0) {
+            blame_txt += author + ": " + percents.toString() + "%<br/>\n"
+        }
+    }
+    $('.commit_blame').html(blame_txt);
+    
+    var changes_txt = "<table>";
+    for (var i = 0; i < commit_info.changes.length; i++) {
+        var change = commit_info.changes[i];
+        changes_txt += '<tr><td class="change_tab_add">' + change[0] + '</td>' + 
+                            '<td class="change_tab_del">' + change[1] + '</td>' + 
+                            '<td class="change_filename">' + change[2] + '</td></tr>';
+    }
+    changes_txt += "</table>";
+    $('.commit_changes').html(changes_txt);
+    
+});
+</script>
