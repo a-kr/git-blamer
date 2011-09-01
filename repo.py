@@ -4,7 +4,8 @@ import cPickle as pickle
 
 import cmds
 import plot
-import graph
+import commitgraph
+import dirtree
 
 class Repo(object):
     """ git-репозиторий """
@@ -89,6 +90,7 @@ class Repo(object):
         """ Возвращает true, если файл с указанным именем не должен учитываться
             при подсчете метрик (например, является бинарным)
         """
+        return not file_path.endswith('.py')
         # TODO: считывать конфиг из репозитория
         if 'aot_seman' in file_path:
             return True
@@ -165,6 +167,28 @@ class Repo(object):
                 stack.append([parent_sha, 0])
         return [sha1 for sha1, _ in longest_path]
         
+    def dump_commit_info_js(self, fileobject):
+        """ Записывает структуры данных с описанием коммитов на языке JavaScript
+            в файлоподобный объект fileobject.
+        """
+        f = fileobject
+        for sha1 in r.commits:
+            x, y = commit_coords[sha1]
+            commit = r.commits[sha1]
+            print >>f, 'Commits.add(%d, %d, {' % (x, y)
+            print >>f, '\tx: %d, y: %d,' % (x, y)
+            print >>f, '\tsha1: "%s",' % sha1
+            print >>f, '\tauthor: "%s",' % commit.author
+            print >>f, '\tdate: "%s",' % str(commit.date)
+            print >>f, '\tmessage: "%s",' % commit.message
+            print >>f, '\tblame: %s,' % json.dumps(commit.snapshot_blame.data)
+            if len(commit.parents) > 1:
+                changes = []
+            else:
+                changes = [ [la, ld, path] for path, la, ld in commit.changes ]
+            print >>f, '\tchanges: %s,' % json.dumps(changes)
+            print >>f, '});'
+        
 
 repo_path = r"c:\Dropbox\MSTU\8_Semester\dialog\question_thing"
 r = Repo.open(repo_path)
@@ -181,7 +205,7 @@ print "Plotting..."
 
 longest_path = r.get_longest_path()
 print "Found longest_path, len = ", len(longest_path)
-png, commit_coords = graph.commit_network(r, set(longest_path))
+png, commit_coords = commitgraph.commit_network(r, set(longest_path))
 f = open('graph.png', 'wb')
 f.write(png)
 f.close()
@@ -201,23 +225,10 @@ import json
 
 print "Writing commit information..."
 f = open('commits-data.js', 'w')
-for sha1 in r.commits:
-    x, y = commit_coords[sha1]
-    commit = r.commits[sha1]
-    print >>f, 'Commits.add(%d, %d, {' % (x, y)
-    print >>f, '\tx: %d, y: %d,' % (x, y)
-    print >>f, '\tsha1: "%s",' % sha1
-    print >>f, '\tauthor: "%s",' % commit.author
-    print >>f, '\tdate: "%s",' % str(commit.date)
-    print >>f, '\tmessage: "%s",' % commit.message
-    print >>f, '\tblame: %s,' % json.dumps(commit.snapshot_blame.data)
-    if len(commit.parents) > 1:
-        changes = []
-    else:
-        changes = [ [la, ld, path] for path, la, ld in commit.changes ]
-    print >>f, '\tchanges: %s,' % json.dumps(changes)
-    print >>f, '});'
-
+r.dump_commit_info_js(f)
 f.close()
 print "Done"
+
+root = dirtree.Directory.from_revision_blames(r.commits[r.head].snapshot_file_blames)
+root.printf()
     
