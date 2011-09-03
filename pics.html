@@ -6,6 +6,8 @@
 <script src="jquery.js"></script>
 <script src="commits-map.js"></script>
 <script src="commits-data.js"></script>
+<script src="dirtree.js"></script>
+<script src="dirtree-data.js"></script>
 
 <style>
 #commit_info {
@@ -15,6 +17,7 @@
     font-family: tahoma, arial, sans-serif;
     font-size: 10pt;
     width: auto;
+    display: none;
 }
 
 #commit_aim {
@@ -37,7 +40,7 @@
 </style>
 
 <div id="commit_info">
-<img id="commit_aim" src="dot.png"/>
+<img id="commit_aim" src="img/dot.png"/>
 <div class="commit_sha1"></div>
 <div class="commit_author"></div>
 <div class="commit_date"></div>
@@ -47,6 +50,20 @@
 <hr/>
 <div class="commit_changes"></div>
 </div>
+
+<style>
+#filebrowser { 
+    border-collapse: collapse;
+    font-family:
+    tahoma, arial, sans-serif;
+    font-size: 10pt;
+}
+#filebrowser th { border: solid 1px gray }
+#filebrowser td { border: solid 1px gray }
+
+div.dt_dir { background-image: url(img/folder.png); background-repeat: no-repeat }
+div.dt_file { background-image: url(img/file.png); background-repeat: no-repeat }
+</style>
 
 <table id="filebrowser">
 <tr><th>File</th><th>Lines</th><th>Authors</th></tr>
@@ -114,4 +131,6 @@ $('#graph').mousemove( function (evt) {
     $('.commit_changes').html(changes_txt);
     
 });
+
+DirTree.load_root("#filebrowser")
 </script>

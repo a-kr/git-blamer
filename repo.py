@@ -230,5 +230,11 @@ f.close()
 print "Done"
 
 root = dirtree.Directory.from_revision_blames(r.commits[r.head].snapshot_file_blames)
-root.printf()
+
+print "Writing dirtree information..."
+f = open('dirtree-data.js', 'w')
+root.dump_to_js(f)
+f.close()
+print "Done"
+
     

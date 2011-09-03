@@ -1,6 +1,7 @@
 # coding: utf-8
 
 import os
+import json
 from collections import defaultdict
 
 from objects import Blame
@@ -57,6 +58,28 @@ class Directory(object):
             self.dirs[subdir].printf(depth+1)
         for file in self.files:
             print '   ' * depth, file, ["%s %3.0f%%" % impact for impact in self.files[file].author_impacts()]
+            
+    def dump_to_js(self, file, path='/', depth=0):
+        """ Запись информации о содержимом каталога в файл JavaScript """
+        def write(entry_type, entry_name, entry_blame):
+            lines = entry_blame.size()
+            blame = entry_blame.author_impacts(lower_limit=5.0)
+            json_blame = json.dumps(blame)
+            print >>file, """DirTree.add({
+                type: "%s",
+                depth: %s,
+                path: "%s",
+                name: "%s",
+                lines: %d,
+                blame: %s
+})""" % (entry_type, depth, path, entry_name, lines, json_blame)
+            
+                
+        for subdir in self.dirs:
+            write('dir', subdir, self.dirs[subdir].blame)
+            self.dirs[subdir].dump_to_js(file, path + subdir + '/', depth+1)
+        for filename in self.files:
+            write('file', filename, self.files[filename])
             
             
          

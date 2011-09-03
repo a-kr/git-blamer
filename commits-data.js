@@ -4,7 +4,7 @@ Commits.add(767, 41, {
 	author: "Lisin Sergey <lis2104@rambler.ru>",
 	date: "2011-04-19 16:54:02",
 	message: "progress and cancelling in search",
-	blame: {"Lisin Sergey <lis2104@rambler.ru>": 297, "Your Name <madcat1991@gmail.com>": 145, "Alexey Kruchkov <alexey.kruchkov@gmail.com>": 1201, "Tural <madcat1991@gmail.com>": 131},
+	blame: {"Lisin Sergey <lis2104@rambler.ru>": 297, "Your Name <madcat1991@gmail.com>": 135, "Alexey Kruchkov <alexey.kruchkov@gmail.com>": 1196, "Tural <madcat1991@gmail.com>": 102},
 	changes: [[13, 1, "project_code/gui.py"], [22, 1, "project_code/question_answerer.py"]],
 });
 Commits.add(527, 7, {
@@ -85,7 +85,7 @@ Commits.add(407, 41, {
 	author: "Alexey Kruchkov <alexey.kruchkov@gmail.com>",
 	date: "2011-04-04 17:32:36",
 	message: "i love merging",
-	blame: {"Your Name <madcat1991@gmail.com>": 241, "Babazka <alexey.kruchkov@gmail.com>": 51, "Alexey Kruchkov <alexey.kruchkov@gmail.com>": 428, "Tural <madcat1991@gmail.com>": 7},
+	blame: {"Babazka <alexey.kruchkov@gmail.com>": 51, "Your Name <madcat1991@gmail.com>": 235, "Alexey Kruchkov <alexey.kruchkov@gmail.com>": 464, "Tural <madcat1991@gmail.com>": 7},
 	changes: [],
 });
 Commits.add(127, 42, {
@@ -97,14 +97,14 @@ Commits.add(127, 42, {
 	blame: {"Babazka <alexey.kruchkov@gmail.com>": 53, "Tural <madcat1991@gmail.com>": 1},
 	changes: [[1, 1, "aot_seman/sclient.py"]],
 });
-Commits.add(47, 54, {
-	x: 47, y: 54,
-	sha1: "e0d2b17b2d5e0b0ccc1d46c016476f594a8eea8c",
-	author: "Lisin Sergey <lis2104@rambler.ru>",
-	date: "2011-02-25 23:01:54",
-	message: "testing",
-	blame: {},
-	changes: [[1, 0, "test.txt"]],
+Commits.add(267, 42, {
+	x: 267, y: 42,
+	sha1: "e2778b327f31656d4648473f116df5b26e485bc1",
+	author: "Your Name <madcat1991@gmail.com>",
+	date: "2011-03-22 13:37:09",
+	message: "RussianAnalyzer works",
+	blame: {"Babazka <alexey.kruchkov@gmail.com>": 52, "Tural <madcat1991@gmail.com>": 1, "Your Name <madcat1991@gmail.com>": 141},
+	changes: [[1, 1, "aot_seman/sclient.py"], [30, 24, "project_code/.idea/workspace.xml"], [3, 2, "project_code/html_parser.py"], [1, 1, "project_code/indexator.py"]],
 });
 Commits.add(387, 51, {
 	x: 387, y: 51,
@@ -112,7 +112,7 @@ Commits.add(387, 51, {
 	author: "Tural <madcat1991@gmail.com>",
 	date: "2011-03-31 02:29:12",
 	message: "have added explanation to search results",
-	blame: {"Your Name <madcat1991@gmail.com>": 241, "Babazka <alexey.kruchkov@gmail.com>": 51, "Alexey Kruchkov <alexey.kruchkov@gmail.com>": 428, "Tural <madcat1991@gmail.com>": 7},
+	blame: {"Babazka <alexey.kruchkov@gmail.com>": 51, "Your Name <madcat1991@gmail.com>": 241, "Alexey Kruchkov <alexey.kruchkov@gmail.com>": 428, "Tural <madcat1991@gmail.com>": 7},
 	changes: [[53, 48, "project_code/.idea/workspace.xml"], [1, 1, "project_code/gui.py"], [4, 1, "project_code/html_parser.py"], [2, 0, "project_code/question_answerer.py"]],
 });
 Commits.add(427, 41, {
@@ -121,7 +121,7 @@ Commits.add(427, 41, {
 	author: "Alexey Kruchkov <alexey.kruchkov@gmail.com>",
 	date: "2011-04-04 19:08:26",
 	message: "Wrapper for Sentence Divider",
-	blame: {"Your Name <madcat1991@gmail.com>": 240, "Babazka <alexey.kruchkov@gmail.com>": 36, "Alexey Kruchkov <alexey.kruchkov@gmail.com>": 494, "Tural <madcat1991@gmail.com>": 7},
+	blame: {"Babazka <alexey.kruchkov@gmail.com>": 36, "Your Name <madcat1991@gmail.com>": 234, "Alexey Kruchkov <alexey.kruchkov@gmail.com>": 530, "Tural <madcat1991@gmail.com>": 7},
 	changes: [[1, 0, "aot_seman/__init__.py"], [0, 57, "aot_seman/sclient.py"], [61, 0, "aot_seman/semantic.py"], [45, 0, "aot_seman/sentencer.py"], [5, 1, "\"aot_seman/\\347\\340\\342\\350\\361\\350\\354\\356\\361\\362\\350.txt\""]],
 });
 Commits.add(67, 31, {
@@ -178,6 +178,15 @@ Commits.add(547, 53, {
 	blame: {"Lisin Sergey <lis2104@rambler.ru>": 1, "Your Name <madcat1991@gmail.com>": 208, "Alexey Kruchkov <alexey.kruchkov@gmail.com>": 763, "Tural <madcat1991@gmail.com>": 6},
 	changes: [[1, 1, "project_code/aot_wrap/semantic.py"]],
 });
+Commits.add(47, 54, {
+	x: 47, y: 54,
+	sha1: "e0d2b17b2d5e0b0ccc1d46c016476f594a8eea8c",
+	author: "Lisin Sergey <lis2104@rambler.ru>",
+	date: "2011-02-25 23:01:54",
+	message: "testing",
+	blame: {},
+	changes: [[1, 0, "test.txt"]],
+});
 Commits.add(227, 42, {
 	x: 227, y: 42,
 	sha1: "9465c1827e8ea6b65040fa030e9287afda8ca9f7",
@@ -211,7 +220,7 @@ Commits.add(747, 41, {
 	author: "Lisin Sergey <lis2104@rambler.ru>",
 	date: "2011-04-19 12:19:04",
 	message: "lis netbook commit",
-	blame: {"Lisin Sergey <lis2104@rambler.ru>": 262, "Your Name <madcat1991@gmail.com>": 145, "Alexey Kruchkov <alexey.kruchkov@gmail.com>": 1203, "Tural <madcat1991@gmail.com>": 131},
+	blame: {"Lisin Sergey <lis2104@rambler.ru>": 262, "Your Name <madcat1991@gmail.com>": 135, "Alexey Kruchkov <alexey.kruchkov@gmail.com>": 1198, "Tural <madcat1991@gmail.com>": 102},
 	changes: [],
 });
 Commits.add(387, 30, {
@@ -274,7 +283,7 @@ Commits.add(787, 41, {
 	author: "Lisin Sergey <lis2104@rambler.ru>",
 	date: "2011-04-28 00:32:24",
 	message: "add graph window",
-	blame: {"Lisin Sergey <lis2104@rambler.ru>": 531, "Your Name <madcat1991@gmail.com>": 145, "Alexey Kruchkov <alexey.kruchkov@gmail.com>": 1196, "Tural <madcat1991@gmail.com>": 131},
+	blame: {"Lisin Sergey <lis2104@rambler.ru>": 531, "Your Name <madcat1991@gmail.com>": 135, "Alexey Kruchkov <alexey.kruchkov@gmail.com>": 1191, "Tural <madcat1991@gmail.com>": 102},
 	changes: [[31, 0, "project_code/graph_window.py"], [188, 0, "project_code/graphctrl.py"], [15, 5, "project_code/gui.py"]],
 });
 Commits.add(67, 51, {
@@ -295,14 +304,14 @@ Commits.add(467, 41, {
 	blame: {"Your Name <madcat1991@gmail.com>": 208, "Alexey Kruchkov <alexey.kruchkov@gmail.com>": 764, "Tural <madcat1991@gmail.com>": 6},
 	changes: [[27, 1, "project_code/gui.py"], [1, 0, "project_code/html_parser.py"], [2, 0, "project_code/indexator.py"]],
 });
-Commits.add(267, 42, {
-	x: 267, y: 42,
-	sha1: "e2778b327f31656d4648473f116df5b26e485bc1",
-	author: "Your Name <madcat1991@gmail.com>",
-	date: "2011-03-22 13:37:09",
-	message: "RussianAnalyzer works",
-	blame: {"Babazka <alexey.kruchkov@gmail.com>": 52, "Tural <madcat1991@gmail.com>": 1, "Your Name <madcat1991@gmail.com>": 141},
-	changes: [[1, 1, "aot_seman/sclient.py"], [30, 24, "project_code/.idea/workspace.xml"], [3, 2, "project_code/html_parser.py"], [1, 1, "project_code/indexator.py"]],
+Commits.add(687, 7, {
+	x: 687, y: 7,
+	sha1: "b87114ad18a1b362586424323b5525889de4b78b",
+	author: "Tural <madcat1991@gmail.com>",
+	date: "2011-04-19 09:58:01",
+	message: "Merge branch 'master' of github.com:madcat1991/question_thing",
+	blame: {"Lisin Sergey <lis2104@rambler.ru>": 274, "Your Name <madcat1991@gmail.com>": 145, "Alexey Kruchkov <alexey.kruchkov@gmail.com>": 1152, "Tural <madcat1991@gmail.com>": 130},
+	changes: [],
 });
 Commits.add(667, 7, {
 	x: 667, y: 7,
@@ -339,15 +348,6 @@ Commits.add(667, 27, {
 	message: "question semantic in gui",
 	blame: {"Lisin Sergey <lis2104@rambler.ru>": 274, "Your Name <madcat1991@gmail.com>": 145, "Alexey Kruchkov <alexey.kruchkov@gmail.com>": 1152, "Tural <madcat1991@gmail.com>": 130},
 	changes: [[1, 1, "project_code/aot_wrap/synonimizer.py"], [4, 0, "project_code/gui.py"]],
-});
-Commits.add(687, 7, {
-	x: 687, y: 7,
-	sha1: "b87114ad18a1b362586424323b5525889de4b78b",
-	author: "Tural <madcat1991@gmail.com>",
-	date: "2011-04-19 09:58:01",
-	message: "Merge branch 'master' of github.com:madcat1991/question_thing",
-	blame: {"Lisin Sergey <lis2104@rambler.ru>": 274, "Your Name <madcat1991@gmail.com>": 145, "Alexey Kruchkov <alexey.kruchkov@gmail.com>": 1152, "Tural <madcat1991@gmail.com>": 130},
-	changes: [],
 });
 Commits.add(687, 27, {
 	x: 687, y: 27,
@@ -409,7 +409,7 @@ Commits.add(707, 27, {
 	author: "Alexey Kruchkov <alexey.kruchkov@gmail.com>",
 	date: "2011-04-19 09:58:49",
 	message: "Merge branch 'master' of github.com:madcat1991/question_thing",
-	blame: {"Lisin Sergey <lis2104@rambler.ru>": 274, "Your Name <madcat1991@gmail.com>": 145, "Alexey Kruchkov <alexey.kruchkov@gmail.com>": 1152, "Tural <madcat1991@gmail.com>": 130},
+	blame: {"Lisin Sergey <lis2104@rambler.ru>": 274, "Your Name <madcat1991@gmail.com>": 145, "Alexey Kruchkov <alexey.kruchkov@gmail.com>": 1150, "Tural <madcat1991@gmail.com>": 133},
 	changes: [],
 });
 Commits.add(807, 41, {
@@ -418,7 +418,7 @@ Commits.add(807, 41, {
 	author: "Alexey Kruchkov <alexey.kruchkov@gmail.com>",
 	date: "2011-04-28 08:01:57",
 	message: "Graphs now look a bit nicer",
-	blame: {"Lisin Sergey <lis2104@rambler.ru>": 530, "Your Name <madcat1991@gmail.com>": 145, "Alexey Kruchkov <alexey.kruchkov@gmail.com>": 1200, "Tural <madcat1991@gmail.com>": 131},
+	blame: {"Lisin Sergey <lis2104@rambler.ru>": 530, "Your Name <madcat1991@gmail.com>": 135, "Alexey Kruchkov <alexey.kruchkov@gmail.com>": 1195, "Tural <madcat1991@gmail.com>": 102},
 	changes: [[4, 1, "project_code/graph_window.py"]],
 });
 Commits.add(207, 42, {
