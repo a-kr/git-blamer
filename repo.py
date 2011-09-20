@@ -190,51 +190,53 @@ class Repo(object):
             print >>f, '});'
         
 
-repo_path = r"c:\Dropbox\MSTU\8_Semester\dialog\question_thing"
-r = Repo.open(repo_path)
-print "Repo loaded."
-print "Blaming the authors..."
-r.compute_blame()
-print "Done."
-print "Saving data..."
-r.save()
-print "Done."
-print "Stats for the latest revision:"
-print r.commits[r.head].snapshot_blame
-print "Plotting..."
+if __name__ == '__main__':
+    # TODO: разобрать этот бардак
+    repo_path = r"c:\Dropbox\MSTU\8_Semester\dialog\question_thing"
+    r = Repo.open(repo_path)
+    print "Repo loaded."
+    print "Blaming the authors..."
+    r.compute_blame()
+    print "Done."
+    print "Saving data..."
+    r.save()
+    print "Done."
+    print "Stats for the latest revision:"
+    print r.commits[r.head].snapshot_blame
+    print "Plotting..."
 
-longest_path = r.get_longest_path()
-print "Found longest_path, len = ", len(longest_path)
-png, commit_coords = commitgraph.commit_network(r, set(longest_path))
-f = open('graph.png', 'wb')
-f.write(png)
-f.close()
-print "Plotting blame..."
-png = plot.plot_snapshot_blame(r, longest_path, commit_coords, relative=False)
-f = open('blame-abs.png', 'wb')
-f.write(png)
-f.close()
-print "Plotting blame (rel)..."
-png = plot.plot_snapshot_blame(r, longest_path, commit_coords, relative=True)
-f = open('blame-rel.png', 'wb')
-f.write(png)
-f.close()
-print "Done"
+    longest_path = r.get_longest_path()
+    print "Found longest_path, len = ", len(longest_path)
+    png, commit_coords = commitgraph.commit_network(r, set(longest_path))
+    f = open('graph.png', 'wb')
+    f.write(png)
+    f.close()
+    print "Plotting blame..."
+    png = plot.plot_snapshot_blame(r, longest_path, commit_coords, relative=False)
+    f = open('blame-abs.png', 'wb')
+    f.write(png)
+    f.close()
+    print "Plotting blame (rel)..."
+    png = plot.plot_snapshot_blame(r, longest_path, commit_coords, relative=True)
+    f = open('blame-rel.png', 'wb')
+    f.write(png)
+    f.close()
+    print "Done"
 
-import json
+    import json
 
-print "Writing commit information..."
-f = open('commits-data.js', 'w')
-r.dump_commit_info_js(f)
-f.close()
-print "Done"
+    print "Writing commit information..."
+    f = open('commits-data.js', 'w')
+    r.dump_commit_info_js(f)
+    f.close()
+    print "Done"
 
-root = dirtree.Directory.from_revision_blames(r.commits[r.head].snapshot_file_blames)
+    root = dirtree.Directory.from_revision_blames(r.commits[r.head].snapshot_file_blames)
 
-print "Writing dirtree information..."
-f = open('dirtree-data.js', 'w')
-root.dump_to_js(f)
-f.close()
-print "Done"
+    print "Writing dirtree information..."
+    f = open('dirtree-data.js', 'w')
+    root.dump_to_js(f)
+    f.close()
+    print "Done"
 
     
