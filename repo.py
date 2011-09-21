@@ -1,6 +1,7 @@
 # coding: utf-8
 import os
 import cPickle as pickle
+import json
 
 import cmds
 import plot
@@ -167,14 +168,14 @@ class Repo(object):
                 stack.append([parent_sha, 0])
         return [sha1 for sha1, _ in longest_path]
         
-    def dump_commit_info_js(self, fileobject):
+    def dump_commit_info_js(self, fileobject, commit_coords):
         """ Записывает структуры данных с описанием коммитов на языке JavaScript
             в файлоподобный объект fileobject.
         """
         f = fileobject
-        for sha1 in r.commits:
+        for sha1 in self.commits:
             x, y = commit_coords[sha1]
-            commit = r.commits[sha1]
+            commit = self.commits[sha1]
             print >>f, 'Commits.add(%d, %d, {' % (x, y)
             print >>f, '\tx: %d, y: %d,' % (x, y)
             print >>f, '\tsha1: "%s",' % sha1
@@ -186,57 +187,6 @@ class Repo(object):
                 changes = []
             else:
                 changes = [ [la, ld, path] for path, la, ld in commit.changes ]
-            print >>f, '\tchanges: %s,' % json.dumps(changes)
+            print >>f, '\tchanges: %s' % json.dumps(changes)
             print >>f, '});'
         
-
-if __name__ == '__main__':
-    # TODO: разобрать этот бардак
-    repo_path = r"c:\Dropbox\MSTU\8_Semester\dialog\question_thing"
-    r = Repo.open(repo_path)
-    print "Repo loaded."
-    print "Blaming the authors..."
-    r.compute_blame()
-    print "Done."
-    print "Saving data..."
-    r.save()
-    print "Done."
-    print "Stats for the latest revision:"
-    print r.commits[r.head].snapshot_blame
-    print "Plotting..."
-
-    longest_path = r.get_longest_path()
-    print "Found longest_path, len = ", len(longest_path)
-    png, commit_coords = commitgraph.commit_network(r, set(longest_path))
-    f = open('graph.png', 'wb')
-    f.write(png)
-    f.close()
-    print "Plotting blame..."
-    png = plot.plot_snapshot_blame(r, longest_path, commit_coords, relative=False)
-    f = open('blame-abs.png', 'wb')
-    f.write(png)
-    f.close()
-    print "Plotting blame (rel)..."
-    png = plot.plot_snapshot_blame(r, longest_path, commit_coords, relative=True)
-    f = open('blame-rel.png', 'wb')
-    f.write(png)
-    f.close()
-    print "Done"
-
-    import json
-
-    print "Writing commit information..."
-    f = open('commits-data.js', 'w')
-    r.dump_commit_info_js(f)
-    f.close()
-    print "Done"
-
-    root = dirtree.Directory.from_revision_blames(r.commits[r.head].snapshot_file_blames)
-
-    print "Writing dirtree information..."
-    f = open('dirtree-data.js', 'w')
-    root.dump_to_js(f)
-    f.close()
-    print "Done"
-
-    
