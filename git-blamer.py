@@ -1,4 +1,13 @@
 ﻿# coding: utf-8
+u"""
+    Git-blamer: основной модуль.
+    
+    Извлекает данные об истории репозитория и сохраняет их в виде статического
+    веб-сайта.
+    
+    Использование: 
+    git-blamer.py <путь к репозиторию> <путь к сайту>
+"""
 import os
 import sys
 import shutil
@@ -11,8 +20,12 @@ import dirtree
 
 THIS_DIR = os.path.dirname(__file__)
 
+def help():
+    print __doc__
+    exit()
+
 def copy_common_files(target_dir):
-    """ Копирование JS-библиотек и графики в целевой каталог """
+    """ Копирует JS-библиотеки и графику в целевой каталог """
     files = [
         'commits-map.js',
         'dirtree.js',
@@ -30,8 +43,10 @@ def copy_common_files(target_dir):
                 shutil.rmtree(full_dst)
             shutil.copytree(full_src, full_dst)
 
-def main():
-    repo_path = r"c:\Dropbox\MSTU\8_Semester\dialog\question_thing"
+def create_site(repo_path, target_dir):
+    """ Записывает извлекаемые из репозитория данные в виде статического
+        HTML-сайта в каталог target_dir """
+            
     r = Repo.open(repo_path)
     print "Repo loaded."
     print "Blaming the authors..."
@@ -44,7 +59,6 @@ def main():
     print r.commits[r.head].snapshot_blame
     print "Plotting..."
     
-    target_dir = 'b:/result'
     if not os.path.isdir(target_dir):
         os.makedirs(target_dir)
     copy_common_files(target_dir)
@@ -67,8 +81,6 @@ def main():
     f.close()
     print "Done"
 
-    import json
-
     print "Writing commit information..."
     f = open(os.path.join(target_dir, 'commits-data.js'), 'w')
     r.dump_commit_info_js(f, commit_coords)
@@ -83,6 +95,18 @@ def main():
     f.close()
     print "Done"
     
+def main():
+    if len(sys.argv) == 2 and sys.argv[1] == 'test':
+        sys.argv = [sys.argv[0], 
+                    r"c:\Dropbox\MSTU\8_Semester\dialog\question_thing",
+                    r"b:\result"
+                   ]
+                   
+    if len(sys.argv) != 3:
+        help()
+    repo_path = sys.argv[1]
+    site_path = sys.argv[2]
+    create_site(repo_path, site_path)
     
 if __name__ == '__main__':
     main()
